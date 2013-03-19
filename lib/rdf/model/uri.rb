@@ -30,7 +30,7 @@ module RDF
     # Defines the maximum number of interned URI references that can be held
     # cached in memory at any one time.
     CACHE_SIZE = -1 # unlimited by default
-    
+
     # IRI components
     if RUBY_VERSION >= '1.9'
       UCSCHAR = Regexp.compile(<<-EOS.gsub(/\s+/, ''))
@@ -83,13 +83,13 @@ module RDF
     IHOST = Regexp.compile("(?:#{IP_literal})|(?:#{IREG_NAME})")
     IUSERINFO = Regexp.compile("(?:(?:#{IUNRESERVED})|(?:#{PCT_ENCODED})|(?:#{SUB_DELIMS})|:)*")
     IAUTHORITY = Regexp.compile("(?:#{IUSERINFO}@)?#{IHOST}(?::#{PORT})?")
-    
+
     IRELATIVE_PART = Regexp.compile("(?:(?://#{IAUTHORITY}(?:#{IPATH_ABEMPTY}))|(?:#{IPATH_ABSOLUTE})|(?:#{IPATH_NOSCHEME})|(?:#{IPATH_EMPTY}))")
     IRELATIVE_REF = Regexp.compile("^#{IRELATIVE_PART}(?:\\?#{IQUERY})?(?:\\##{IFRAGMENT})?$")
 
     IHIER_PART = Regexp.compile("(?:(?://#{IAUTHORITY}#{IPATH_ABEMPTY})|(?:#{IPATH_ABSOLUTE})|(?:#{IPATH_ROOTLESS})|(?:#{IPATH_EMPTY}))")
     IRI = Regexp.compile("^#{SCHEME}:(?:#{IHIER_PART})(?:\\?#{IQUERY})?(?:\\##{IFRAGMENT})?$")
-    
+
     ##
     # @return [RDF::Util::Cache]
     # @private
@@ -214,7 +214,7 @@ module RDF
     def valid?
       # As Addressable::URI does not perform adequate validation, validate
       # relative to RFC3987
-      to_s.match(RDF::URI::IRI) || to_s.match(RDF::URI::IRELATIVE_REF) || false
+      @uri.to_s.match(RDF::URI::IRI) || to_s.match(RDF::URI::IRELATIVE_REF) || false
     end
 
     ##
@@ -600,7 +600,7 @@ module RDF
     #
     # @return [String]
     def to_str
-      @uri.to_s
+      Addressable::URI.encode(@uri)
     end
     alias_method :to_s, :to_str
 

@@ -142,7 +142,7 @@ describe RDF::URI do
           end
         end
       end
-      
+
       [" ", "<", ">", "'" '"'].each do |c|
         it "does not validate <http://example/#{c}>" do
           RDF::URI("http://example/#{c}").should_not be_valid
@@ -344,6 +344,12 @@ describe RDF::URI do
       it "creates #{result} from <#{input[0]}> and '#{input[1]}'" do
         @writer.serialize(RDF::URI.new(input[0]).join(input[1].to_s)).should == result
       end
+    end
+  end
+
+  context "when passed bad data" do
+    it "should encode the characters in the URL" do
+      RDF::URI.new("http://foo/bar baz").to_s.should == "http://foo/bar%20baz"
     end
   end
 end

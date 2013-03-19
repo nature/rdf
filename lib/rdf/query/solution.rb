@@ -21,11 +21,6 @@ class RDF::Query
   #   solution.to_hash       #=> {:mbox => "jrhacker@example.org", ...}
   #
   class Solution
-    # Undefine all superfluous instance methods:
-    undef_method(*(instance_methods.map(&:to_sym) - [:__id__, :__send__, :__class__, :__eval__,
-      :object_id, :dup, :instance_eval, :inspect, :to_s,
-      :class, :is_a?, :respond_to?, :respond_to_missing?]))
-
     include Enumerable
 
     ##
@@ -190,7 +185,7 @@ class RDF::Query
         !other.to_hash.has_key?(k) || other[k].eql?(v)
       end
     end
-    
+
     ##
     # Isomorphic Mappings
     # Two solution mappings u1 and u2 are isomorphic if,
@@ -204,7 +199,7 @@ class RDF::Query
         !other.to_hash.has_key?(k) || other[k].eql?(v)
       end
     end
-    
+
     ##
     # @return [Array<Array(Symbol, RDF::Term)>}
     def to_a
@@ -216,14 +211,14 @@ class RDF::Query
     def to_hash
       @bindings.dup
     end
-    
+
     ##
     # Integer hash of this solution
     # @return [Integer]
     def hash
       @bindings.hash
     end
-    
+
     ##
     # Equivalence of solution
     def eql?(other)
